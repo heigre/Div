@@ -1,0 +1,28 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+ 
+entity LedCounter is
+   Port ( clk : in STD_LOGIC;
+          led0_b : out STD_LOGIC;
+          led1_b : out STD_LOGIC;
+          led2_b : out STD_LOGIC;
+          led3_b : out STD_LOGIC);
+end LedCounter;
+ 
+architecture Behavioral of LedCounter is
+   signal counter : UNSIGNED(28 DOWNTO 0);
+begin
+process (clk)
+begin
+   -- count from 0 to 2^29-1 and wrap around
+   if (clk'event and clk = '1') then
+      counter <= counter + 1;
+   end if;
+end process;
+-- connect the 4 MSBs to the blue LEDs
+led3_b <= counter(28);
+led2_b <= counter(27);
+led1_b <= counter(26);
+led0_b <= counter(25);
+end Behavioral;
